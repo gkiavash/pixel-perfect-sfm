@@ -28,10 +28,35 @@ extract_features.main(
     feature_path=path_keypoints
 )
 
-pairs_from_exhaustive.main(
+
+def pairs_from_sequential(
+        output: Path,
+        image_list: Path = None,
+        num_of_pairs_per_frame: int = 3
+):
+    pairs = []
+    path_images_list = list(image_list.iterdir())
+    for ind, frame in enumerate(path_images_list):
+        for i in range(1, num_of_pairs_per_frame + 1):
+            try:
+                pairs.append((
+                    frame.name,
+                    path_images_list[ind + i].name
+                ))
+            except IndexError as e:
+                continue
+    with open(output, 'w') as f:
+        f.write('\n'.join(' '.join([i, j]) for i, j in pairs))
+
+
+pairs_from_sequential(
     output=path_pairs,
-    features=path_keypoints,
+    image_list=path_images,
 )
+# pairs_from_exhaustive.main(
+#     output=path_pairs,
+#     features=path_keypoints,
+# )
 
 match_features.main(
     conf=matcher_conf,
