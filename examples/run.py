@@ -16,11 +16,12 @@ path_pairs = BASE_DIR / 'pairs.txt'
 path_matches = BASE_DIR / 'matches.h5'
 
 keypoints_conf = extract_features.confs["r2d2"]
-matcher_conf = match_features.confs["superglue"]
+matcher_conf = match_features.confs["superglue-fast"]
 
 extract_features.main(
     keypoints_conf,
     path_images,
+    as_half=False,
     feature_path=path_keypoints
 )
 
